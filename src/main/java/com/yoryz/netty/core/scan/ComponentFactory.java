@@ -21,23 +21,6 @@ public class ComponentFactory extends AbstractPackageScanner {
 
     private final Logger logger = LogManager.getLogger(ComponentFactory.class);
 
-    /**
-     * all the component's instant map
-     * including controller, service, dao
-     */
-    private final Map<String, Object> instantMap;
-
-    /**
-     * all the component's class map
-     * including controller, service, dao
-     */
-    private final Map<String, Class<?>> clazzMap;
-
-    /**
-     * all the controller's class list
-     */
-    private final List<Class<?>> controllerClazz;
-
     private static final ComponentFactory INSTANCE = new ComponentFactory();
 
     private ComponentFactory() {
@@ -75,23 +58,4 @@ public class ComponentFactory extends AbstractPackageScanner {
         }
     }
 
-    public Object getInstance(String controllerName) {
-        return instantMap.get(controllerName);
-    }
-
-    public Object getServiceInstance(String serviceName) {
-        return instantMap.get(serviceName);
-    }
-
-    public Object getDaoInstance(String daoName) {
-        return instantMap.get(daoName);
-    }
-
-    public Map<String, Class<?>> getClazzMap() {
-        return clazzMap;
-    }
-
-    public List<Class<?>> getControllers() {
-        return controllerClazz;
-    }
 }

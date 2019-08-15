@@ -1,6 +1,7 @@
 package com.yoryz.netty.core.parse;
 
 import com.yoryz.netty.annotation.Inject;
+import com.yoryz.netty.core.scan.AbstractPackageScanner;
 import com.yoryz.netty.core.scan.ComponentFactory;
 import com.yoryz.netty.exception.ResourceBeanNotFoundException;
 import org.apache.logging.log4j.LogManager;
@@ -21,7 +22,7 @@ public class Populate {
 
     private final Logger logger = LogManager.getLogger(Populate.class);
 
-    private final ComponentFactory componentFactory = ComponentFactory.getInstance();
+    private final AbstractPackageScanner componentFactory = ComponentFactory.getInstance();
 
     private static final Populate INSTANCE = new Populate();
 

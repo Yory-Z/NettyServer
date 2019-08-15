@@ -2,6 +2,7 @@ package com.yoryz.netty.core.server;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
+import com.yoryz.netty.core.scan.AbstractPackageScanner;
 import com.yoryz.netty.core.scan.ComponentFactory;
 import com.yoryz.netty.exception.*;
 import com.yoryz.netty.util.MyResponse;
@@ -40,7 +41,8 @@ class Router {
     private final Logger logger = LogManager.getLogger(Router.class);
 
     private final InterfaceParser interfaceParser = InterfaceParser.getInstance();
-    private final ComponentFactory componentFactory = ComponentFactory.getInstance();
+
+    private final AbstractPackageScanner componentFactory = ComponentFactory.getInstance();
 
     /**
      * the path must has more than one dimensions,

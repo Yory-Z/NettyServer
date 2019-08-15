@@ -1,6 +1,7 @@
 package com.yoryz.netty;
 
 import com.yoryz.netty.core.parse.Populate;
+import com.yoryz.netty.core.scan.AbstractPackageScanner;
 import com.yoryz.netty.core.scan.ComponentFactory;
 import com.yoryz.netty.core.server.ChatServer;
 import com.yoryz.netty.core.parse.InterfaceParser;
@@ -18,7 +19,8 @@ public class AppBooster {
 
         final String basePackage = "com.yoryz.netty";
 
-        ComponentFactory.getInstance().scan(basePackage);
+        AbstractPackageScanner scanner =  ComponentFactory.getInstance();
+        scanner.scan(basePackage);
 
         Populate.getInstance().populateBean();
 

@@ -7,6 +7,8 @@ import java.net.JarURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -19,7 +21,55 @@ import java.util.jar.JarFile;
  */
 public abstract class AbstractPackageScanner {
 
+    /**
+     * all the component's instant map
+     * including controller, service, dao
+     */
+    protected Map<String, Object> instantMap;
+
+    /**
+     * all the component's class map
+     * including controller, service, dao
+     */
+    protected Map<String, Class<?>> clazzMap;
+
+    /**
+     * all the controller's class list
+     */
+    protected List<Class<?>> controllerClazz;
+
+    public Object getInstance(String controllerName) {
+        return instantMap.get(controllerName);
+    }
+
+    public Object getServiceInstance(String serviceName) {
+        return instantMap.get(serviceName);
+    }
+
+    public Object getDaoInstance(String daoName) {
+        return instantMap.get(daoName);
+    }
+
+    public Map<String, Class<?>> getClazzMap() {
+        return clazzMap;
+    }
+
+    public List<Class<?>> getControllers() {
+        return controllerClazz;
+    }
+
+    /**
+     * the sub class should implement this method.
+     * the main job of this method is filling the fields of the AbstractPackageScanner class,
+     * the fields is: instantMap, clazzMap, controllerClazz
+     *
+     * @param clazz the clazz is found by following scan method,
+     *              this clazz would not be annotation, interface, Enum and primitive
+     */
     public abstract void doDealClass(Class<?> clazz);
+
+
+    // ================ the following is the package scanning method ================
 
     public void scan(Class<?> clazz) {
         scan(clazz.getPackage().getName());

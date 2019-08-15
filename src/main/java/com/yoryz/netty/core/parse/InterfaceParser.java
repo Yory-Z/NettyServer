@@ -3,6 +3,7 @@ package com.yoryz.netty.core.parse;
 import com.yoryz.netty.annotation.Controller;
 import com.yoryz.netty.annotation.Get;
 import com.yoryz.netty.annotation.Post;
+import com.yoryz.netty.core.scan.AbstractPackageScanner;
 import com.yoryz.netty.core.scan.ComponentFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,7 +26,7 @@ public class InterfaceParser {
 
     private final Logger logger = LogManager.getLogger(InterfaceParser.class);
 
-    private final ComponentFactory componentFactory = ComponentFactory.getInstance();
+    private final AbstractPackageScanner componentFactory = ComponentFactory.getInstance();
 
 
     /**
