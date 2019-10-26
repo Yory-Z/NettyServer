@@ -1,7 +1,6 @@
 package com.yoryz.netty.core.server;
 
-import com.alibaba.fastjson.JSON;
-import com.yoryz.netty.util.MyResponse;
+import com.yoryz.netty.core.server.chain.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -79,6 +78,24 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
     }
 
     /**
+     * the head supporter of the supporter chain
+     */
+    private static final AbstractChainSupport HEAD_SUPPORT;
+
+    static {
+        AbstractChainSupport okSupport = new OkSupport("200 supporter");
+        AbstractChainSupport notFound = new NotFoundSupport("404 supporter");
+        AbstractChainSupport clientError = new RequestErrorSupport("400 supporter");
+        AbstractChainSupport serverException = new ServerExceptionSupport("500 supporter");
+
+        okSupport.setNext(notFound)
+                .setNext(clientError)
+                .setNext(serverException);
+
+        HEAD_SUPPORT = okSupport;
+    }
+
+    /**
      * handle the http request, the request data is json
      *
      * @param ctx ChannelHandlerContext
@@ -112,33 +129,7 @@ public class HttpRequestHandler extends SimpleChannelInboundHandler<FullHttpRequ
 
         } else {
             // deal with this project business, request uri has specified path
-            MyResponse myResponse = router.analyse(msg);
-            ByteBuf res = Unpooled.wrappedBuffer(JSON.toJSON(myResponse).toString().getBytes());
-            if (MyResponse.isOk(myResponse)) {
-                // return 200
-                // executed successfully
-                response = new DefaultFullHttpResponse(
-                        HttpVersion.HTTP_1_1, HttpResponseStatus.OK, res);
-
-            } else if (MyResponse.isNotFound(myResponse)){
-                // return 404
-                // the uri doesn't exist
-                response = new DefaultFullHttpResponse(
-                        HttpVersion.HTTP_1_1, HttpResponseStatus.NOT_FOUND, res);
-
-            } else if (MyResponse.isRequestError(myResponse)) {
-                // return 400
-                // parameter name not match
-                response = new DefaultFullHttpResponse(
-                        HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST, res);
-
-            } else {
-                // return 500
-                // may be the executing process encountered exception
-                response = new DefaultFullHttpResponse(
-                        HttpVersion.HTTP_1_1, HttpResponseStatus.INTERNAL_SERVER_ERROR, res);
-
-            }
+            response = HEAD_SUPPORT.support(router.analyse(msg));
             contentType = APPLICATION_JSON;
 
         }

@@ -57,7 +57,7 @@ public class InterfaceParser {
 
         initControllerInterface();
 
-        logger.info("Resolving classes done.");
+        logger.info("Resolving classes solve.");
     }
 
     public static InterfaceParser getInstance() {

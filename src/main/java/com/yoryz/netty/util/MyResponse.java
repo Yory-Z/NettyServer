@@ -30,6 +30,8 @@ public class MyResponse {
     private static final Integer ERROR = 4000;
     private static final Integer ERROR_NOT_FOUND = 4004;
 
+    private static final Integer SERVER_EXCEPTION = 5000;
+
     private MyResponse(){}
 
     private MyResponse(Integer status, String msg, Object data) {
@@ -54,6 +56,10 @@ public class MyResponse {
         return new MyResponse(ERROR_NOT_FOUND, "'" + msg + "' not found!", null);
     }
 
+    public static MyResponse serverException(String msg) {
+        return new MyResponse(SERVER_EXCEPTION, msg, null);
+    }
+
     public static boolean isOk(MyResponse myResponse) {
         return OK.equals(myResponse.getStatus());
     }
@@ -64,6 +70,10 @@ public class MyResponse {
 
     public static boolean isRequestError(MyResponse myResponse) {
         return ERROR.equals(myResponse.getStatus());
+    }
+
+    public static boolean isServerException(MyResponse myResponse) {
+        return SERVER_EXCEPTION.equals(myResponse.getStatus());
     }
 
     public Integer getStatus() {

@@ -74,6 +74,9 @@ class Router {
             logger.warn(e.getMessage());
             myResponse = MyResponse.errorMsg(e.getMessage());
 
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+            myResponse = MyResponse.serverException(e.getMessage());
         }
         return myResponse;
     }

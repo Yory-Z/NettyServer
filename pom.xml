@@ -97,6 +97,7 @@
       <version>1.2.41</version>
     </dependency>
 
+    <!-- analyse class file-->
     <dependency>
       <groupId>org.ow2.asm</groupId>
       <artifactId>asm</artifactId>
